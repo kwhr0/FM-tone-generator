@@ -256,13 +256,13 @@ struct SInt32x4 {
 	SInt32x4 operator^(const SInt32x4 &a) const { return veorq_s32(v, a.v); }
 	SInt32x4 operator|(const SInt32x4 &a) const { return vorrq_s32(v, a.v); }
 #ifdef __aarch64__
-    SInt32x4 operator->*(const SInt32x4 &a) const { return vpaddq_s32(v, a.v); }
+	SInt32x4 operator->*(const SInt32x4 &a) const { return vpaddq_s32(v, a.v); }
 #endif
-    SInt32x4 Store(int32_t &p) const { vst1q_s32(&p, v); return *this; }
+	SInt32x4 Store(int32_t &p) const { vst1q_s32(&p, v); return *this; }
 	SInt32x4 QAdd(const SInt32x4 &a) const { return vqaddq_s32(v, a.v); }
 	SInt32x4 MulAdd(const SInt32x4 &a, const SInt32x4 &b) const { return vmlaq_s32(v, a.v, b.v); }
 	SInt32x4 Select(const SInt32x4 &a, SInt32x4 &b) const { return vbslq_s32(v, b.v, a.v); }
-    int32x2_t Low() const { return vget_low_s32(v); }
+	int32x2_t Low() const { return vget_low_s32(v); }
 	static SInt32x4 Dup(int _v) { return vdupq_n_s32(_v); }
 	int32x4_t v;
 };
@@ -285,16 +285,16 @@ struct SInt16x4 {
 	int16x4_t v;
 };
 struct SInt16x8 {
-    SInt16x8() {}
-    SInt16x8(int16_t &p) { v = vld1q_s16(&p); }
-    SInt16x8(int16x8_t _v) { v = _v; }
-    operator int16x8_t() const { return v; }
+	SInt16x8() {}
+	SInt16x8(int16_t &p) { v = vld1q_s16(&p); }
+	SInt16x8(int16x8_t _v) { v = _v; }
+	operator int16x8_t() const { return v; }
 #ifdef __aarch64__
-    SInt16x8 operator->*(const SInt16x8 &a) const { return vpaddq_s16(v, a.v); }
+	SInt16x8 operator->*(const SInt16x8 &a) const { return vpaddq_s16(v, a.v); }
 #endif
-    SInt16x8 operator*(const SInt16x8 &a) const { return vmulq_s16(v, a.v); }
-    SInt32x4 operator++(int) const { return vpaddlq_s16(v); }
-    int16x8_t v;
+	SInt16x8 operator*(const SInt16x8 &a) const { return vmulq_s16(v, a.v); }
+	SInt32x4 operator++(int) const { return vpaddlq_s16(v); }
+	int16x8_t v;
 };
 #define LINDEX()	(l.ShiftRight<32 - Operator8::EG::LOGTABLE_LOG>() + cofs)
 #define NEXT_L(r)	(l.QAdd(r))
@@ -437,7 +437,7 @@ void Channel8::Update(s32 *buf, int numSamples) {
 		SInt16x4 oc70 = op[7].con[0], oc74 = op[7].con[4];
 		SInt16x4 con0 = con[0], con4 = con[4];
 #endif
-        SInt32x4 cofs = SInt32x4::Dup(Operator8::EG::LOGTABLE_N >> 1);
+		SInt32x4 cofs = SInt32x4::Dup(Operator8::EG::LOGTABLE_N >> 1);
 		s32 va[] = { 0x7f - pan, pan };
 		SInt32x2 cvol = va[0];
 #endif

@@ -38,9 +38,9 @@ pthread_t *FMMain::thread;
 FMMain::FMMain() : chType(0) {
 	Operator8::MakeTable();
 #ifdef __APPLE__
-    size_t len = sizeof(ncore);
-    int selection[] = { CTL_HW, HW_NCPU };
-    if (sysctl(selection, 2, &ncore, &len, NULL, 0)) ncore = 1;
+	size_t len = sizeof(ncore);
+	int selection[] = { CTL_HW, HW_NCPU };
+	if (sysctl(selection, 2, &ncore, &len, NULL, 0)) ncore = 1;
 #elif defined(WIN32)
 	ncore = 1;
 #else
