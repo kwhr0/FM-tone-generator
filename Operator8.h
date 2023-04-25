@@ -100,7 +100,7 @@ class Operator8 {
 		u32 GetDelta(u8 note, s16 bend) { // note:0-254
 			u16 v = (note << 7) + bend + det;
 			u16 index = v >> 7;
-			if (index > 510) index = 510;
+			if (index > 254) index = 254;
 			v &= 0x7f;
 			u32 d = ((128 - v) * deltatable[index] + v * deltatable[index + 1]) >> 7;
 			return mul * d >> 9;
