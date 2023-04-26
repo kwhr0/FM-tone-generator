@@ -69,8 +69,8 @@ FMMain::~FMMain() {
 
 int FMMain::LoadTone(const char *tonefile) {
 	FILE *fi;
-#ifdef WIN32
-	if(fopen_s(&fi,tonefile,"rb") != 0)return 1;
+#ifdef #if defined(WIN32) && _MSC_VER >= 1400
+	if(fopen_s(&fi, tonefile, "rb") != 0) return 1;
 #else
 	fi = fopen(tonefile, "rb");
 	if (!fi) return 1;

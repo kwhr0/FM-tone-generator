@@ -82,8 +82,8 @@ int Midi::get4() { // cannot read value -1
 int Midi::Prepare(const char *path) {
 	if (fi) fclose(fi);
 	Clear();
-#ifdef WIN32
-	if(fopen_s(&fi,path,"rb") != 0)return 1;
+#if defined(WIN32) && _MSC_VER >= 1400
+	if(fopen_s(&fi, path, "rb") != 0) return 1;
 #else
 	fi = fopen(path, "rb");
 	if (!fi) return 1;
