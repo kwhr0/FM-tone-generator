@@ -48,7 +48,11 @@ int main(int argc, char *const *argv) {
 	AudioSetup(FMMain::Callback);
 	gFMMain = new FMMain;
 	char s[16];
+#if defined(WIN32) && _MSC_VER >= 1400
+	sprintf_s(s, "tone%d.bin", t % 10);
+#else 
 	sprintf(s, "tone%d.bin", t % 10);
+#endif
 	if (gFMMain->LoadTone(s)) {
 		fprintf(stderr, "%s not found.\n", s);
 		return 1;
