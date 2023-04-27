@@ -83,7 +83,7 @@ int Midi::Prepare(const char *path) {
 	if (fi) fclose(fi);
 	Clear();
 #if defined(WIN32) && _MSC_VER >= 1400
-	if(fopen_s(&fi, path, "rb") != 0) return 1;
+	if (fopen_s(&fi, path, "rb") != 0) return 1;
 #else
 	fi = fopen(path, "rb");
 	if (!fi) return 1;
