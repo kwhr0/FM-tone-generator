@@ -68,8 +68,13 @@ FMMain::~FMMain() {
 }
 
 int FMMain::LoadTone(const char *tonefile) {
-	FILE *fi = fopen(tonefile, "rb");
+	FILE *fi;
+#ifdef #if defined(WIN32) && _MSC_VER >= 1400
+	if(fopen_s(&fi, tonefile, "rb") != 0) return 1;
+#else
+	fi = fopen(tonefile, "rb");
 	if (!fi) return 1;
+#endif
 	fseek(fi, 0, SEEK_END);
 	size_t len = ftell(fi);
 	rewind(fi);
