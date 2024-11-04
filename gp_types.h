@@ -13,7 +13,6 @@ struct GPOperator {
 	int32_t count, delta, lv;
 	uint16_t ml, fvol;
 	int32_t l[N];
-	bool sw[N];
 	uint8_t rate[N];
 	int16_t value;
 	int8_t phase;

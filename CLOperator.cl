@@ -13,9 +13,9 @@ typedef int int32_t;
 
 inline float EG(GPOperator *op) {
 	float t = op->phase != H ? op->fvol / 4096.f - 2.f * log2((float)op->lv / (1 << 21)) : 100.f;
-	int32_t tl = op->lv + (op->sw[op->phase] ? 1 : -1) *
+	int32_t tl = op->lv + (op->phase >= A2 ? 1 : -1) *
 	(op->rate[op->phase] > 0 ? (int)pow(2.f, op->rate[op->phase] / 16.f) : 0);
-	if (op->phase == OFF || op->phase == S || op->sw[op->phase] ^ (tl > op->l[op->phase])) op->lv = clamp(tl, 0, 1 << 21);
+	if (op->phase == OFF || op->phase == S || op->phase >= A2 ^ tl > op->l[op->phase]) op->lv = clamp(tl, 0, 1 << 21);
 	else if (--op->phase >= A1) op->lv = 0;
 	return t;
 }

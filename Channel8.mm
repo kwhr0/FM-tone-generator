@@ -509,11 +509,15 @@ void Channel8::Update(s32 *buf, int numSamples) {
 				for (int j = opN - 1; j >= 0; j--)
 					if (c[j]) mod += value[j];
 				s32 t = (op[i].eg.phase != Operator8::EG::H ?
-					Operator8::EG::logtable[level[i] >> (21 - Operator8::EG::LOGTABLE_LOG)] :
-					Operator8::EG::LOGTABLE_MAX) + op[i].pg.fvol;
-				s32 tl = level[i] + c_rate[i];
+#ifdef SHIFTED_LEVEL
+					Operator8::EG::logtable[(level[i] >> (32 - Operator8::EG::LOGTABLE_LOG)) + Operator8::EG::LOGTABLE_N / 2]
+#else
+					Operator8::EG::logtable[level[i] >> (21 - Operator8::EG::LOGTABLE_LOG)]
+#endif
+					: Operator8::EG::LOGTABLE_MAX) + op[i].pg.fvol;
+				s64 tl = (s64)level[i] + c_rate[i];
 				if (stay[i] || (c_sw[i] ? 1 : 0) ^ (tl > c_l[i]))
-					level[i] = tl < 0 ? 0 : tl > 0x1fffff ? 0x1fffff : tl;
+					level[i] = tl < Operator8::EG::LEVEL_MIN ? Operator8::EG::LEVEL_MIN : tl > Operator8::EG::LEVEL_MAX ? Operator8::EG::LEVEL_MAX : (s32)tl;
 				else op[i].eg.Trans(level[i], stay[i], c_sw[i], c_rate[i], c_l[i]);
 				u16 x = 0;
 				int noise = !i && tone->flags & FLAG_NZ;
@@ -559,7 +563,6 @@ u8 Channel8::CopyToGP(GPVars *c, int index) {
 		m->fvol = op[i].pg.fvol;
 		for (int j = 0; j < GPOperator::N; j++) {
 			m->l[j] = op[i].eg.l[j];
-			m->sw[j] = op[i].eg.sw[j];
 			m->rate[j] = op[i].eg.rate[j];
 		}
 	}

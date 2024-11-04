@@ -11,8 +11,8 @@ using namespace metal;
 
 float GPOperator::EG() {
 	float t = phase != Phase::H ? fvol / 4096.f - 2.f * log2(float(lv) / (1 << 21)) : 100.f;
-	int32_t tl = lv + (sw[phase] ? 1 : -1) * (rate[phase] > 0 ? int(pow(2.f, rate[phase] / 16.f)) : 0);
-	if (phase == OFF || phase == S || sw[phase] ^ (tl > l[phase])) lv = clamp(tl, 0, 1 << 21);
+	int32_t tl = lv + (phase >= Phase::A2 ? 1 : -1) * (rate[phase] > 0 ? int(pow(2.f, rate[phase] / 16.f)) : 0);
+	if (phase == OFF || phase == S || phase >= Phase::A2 ^ tl > l[phase]) lv = clamp(tl, 0, 1 << 21);
 	else if (--phase >= Phase::A1) lv = 0;
 	return t;
 }
